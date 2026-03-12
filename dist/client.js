@@ -35,7 +35,7 @@ export class MoltGrid {
                 url += `?${qs}`;
         }
         const headers = {
-            Authorization: `Bearer ${this.apiKey}`,
+            "X-API-Key": this.apiKey,
             "Content-Type": "application/json",
         };
         const init = { method, headers };

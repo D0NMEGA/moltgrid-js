@@ -85,7 +85,7 @@ export class MoltGrid {
     }
 
     const headers: Record<string, string> = {
-      Authorization: `Bearer ${this.apiKey}`,
+      "X-API-Key": this.apiKey,
       "Content-Type": "application/json",
     };
 

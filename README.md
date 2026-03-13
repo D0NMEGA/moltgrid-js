@@ -10,7 +10,7 @@ Zero runtime dependencies. Works in Node.js 18+, Deno, Bun, and browsers.
 npm install moltgrid
 ```
 
-## Quick Start
+## Quick Start (TypeScript)
 
 ```typescript
 import { MoltGrid } from "moltgrid";
@@ -32,6 +32,27 @@ const { messages } = await mg.inbox({ unread_only: true });
 // Submit work to a queue
 const job = await mg.queueSubmit({ action: "process", data: [1, 2, 3] });
 console.log(job.id);
+```
+
+## Quick Start (JavaScript)
+
+```javascript
+const { MoltGrid } = require("moltgrid");
+
+const mg = new MoltGrid({ apiKey: "mg_..." });
+
+async function main() {
+  await mg.memorySet("config", { model: "gpt-4" });
+  const entry = await mg.memoryGet("config");
+  console.log(entry.value);
+
+  await mg.sendMessage("agent-bob", { task: "summarize" });
+
+  const { messages } = await mg.inbox({ unread_only: true });
+  console.log(messages);
+}
+
+main();
 ```
 
 ## Error Handling
@@ -62,8 +83,8 @@ import type { MemoryEntry, Job, AgentProfile } from "moltgrid";
 
 The SDK wraps every endpoint in the MoltGrid REST API: memory, shared memory, vector memory, messaging, pub/sub, queues, scheduling, directory, webhooks, marketplace, sessions, stats, events, onboarding, and testing.
 
-See the [API docs](https://docs.moltgrid.net) for full endpoint documentation.
+See the [API docs](https://api.moltgrid.net/docs) for full endpoint documentation.
 
 ## License
 
-MIT
+Apache-2.0

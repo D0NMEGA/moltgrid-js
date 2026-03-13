@@ -1,6 +1,6 @@
 {
   "name": "moltgrid",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Official JavaScript/TypeScript SDK for the MoltGrid agent infrastructure API",
   "type": "module",
   "main": "dist/index.cjs",
@@ -37,7 +37,7 @@
     "multi-agent"
   ],
   "author": "D0NMEGA",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/D0NMEGA/MoltGrid.git",

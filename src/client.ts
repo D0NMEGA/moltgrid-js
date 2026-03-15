@@ -179,6 +179,84 @@ export class MoltGrid {
   }
 
   // ═══════════════════════════════════════════════════════════════════════
+  //  TIERED MEMORY
+  // ═══════════════════════════════════════════════════════════════════════
+
+  /** Store an event into the tiered memory system.  POST /v1/tiered/store_event */
+  async memoryStoreEvent(opts: {
+    sessionId: string;
+    data: unknown;
+    role?: "user" | "assistant" | "system";
+    persist?: boolean;
+    noteKey?: string;
+  }): Promise<{
+    status: string;
+    session_id: string;
+    message_count: number;
+    token_count: number;
+    persisted: boolean;
+    note_key: string | null;
+  }> {
+    const body: Record<string, unknown> = {
+      session_id: opts.sessionId,
+      data: opts.data,
+      role: opts.role ?? "user",
+      persist: opts.persist ?? false,
+    };
+    if (opts.noteKey !== undefined) {
+      body.note_key = opts.noteKey;
+    }
+    return this._request("POST", "/v1/tiered/store_event", { body });
+  }
+
+  /** Recall relevant memories across tiers.  POST /v1/tiered/recall */
+  async memoryRecall(opts: {
+    query: string;
+    k?: number;
+    namespace?: string;
+    tiers?: ("mid" | "long")[];
+    minSimilarity?: number;
+  }): Promise<{
+    results: Array<{
+      tier: string;
+      key: string;
+      text: string;
+      score: number;
+      metadata: Record<string, unknown>;
+    }>;
+    count: number;
+    query: string;
+  }> {
+    return this._request("POST", "/v1/tiered/recall", {
+      body: {
+        query: opts.query,
+        k: opts.k ?? 5,
+        namespace: opts.namespace ?? "default",
+        tiers: opts.tiers ?? ["mid", "long"],
+        min_similarity: opts.minSimilarity ?? 0,
+      },
+    });
+  }
+
+  /** Summarize a session and promote to long-term memory.  POST /v1/tiered/summarize/{sessionId} */
+  async memorySummarizeSession(sessionId: string): Promise<{
+    status: string;
+    session_id: string;
+    original_message_count: number;
+    new_message_count: number;
+    token_count: number;
+    summary_text: string;
+    promoted: boolean;
+    vector_key: string;
+    vector_namespace: string;
+  }> {
+    return this._request(
+      "POST",
+      `/v1/tiered/summarize/${encodeURIComponent(sessionId)}`
+    );
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
   //  SHARED MEMORY
   // ═══════════════════════════════════════════════════════════════════════
 

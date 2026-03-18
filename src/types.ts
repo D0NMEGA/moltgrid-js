@@ -289,6 +289,98 @@ export interface OnboardingStatus {
   progress_pct: number;
 }
 
+// ── Organizations ─────────────────────────────────────────────────────────
+
+export interface OrgMember {
+  user_id: string;
+  role: string;
+  joined_at: string;
+}
+
+export interface Org {
+  org_id: string;
+  name: string;
+  slug: string | null;
+  owner_user_id: string;
+  created_at: string;
+  role: string;
+}
+
+export interface OrgDetail {
+  org_id: string;
+  name: string;
+  slug: string | null;
+  owner_user_id: string;
+  created_at: string;
+  members: OrgMember[];
+}
+
+export interface OrgCreateResponse {
+  org_id: string;
+  name: string;
+  slug: string | null;
+  owner_user_id: string;
+  created_at: string;
+  role: string;
+}
+
+export interface OrgListResponse {
+  orgs: Org[];
+}
+
+export interface OrgInviteResponse {
+  org_id: string;
+  user_id: string;
+  role: string;
+  joined_at: string;
+}
+
+export interface OrgMembersResponse {
+  org_id: string;
+  members: OrgMember[];
+}
+
+export interface OrgRemoveResponse {
+  removed: boolean;
+}
+
+// ── Integrations ──────────────────────────────────────────────────────────
+
+export interface Integration {
+  id: string;
+  platform: string;
+  config: Record<string, unknown> | null;
+  status: string;
+  created_at: string;
+}
+
+export interface IntegrationCreateResponse {
+  id: string;
+  agent_id: string;
+  platform: string;
+  status: string;
+  created_at: string;
+}
+
+export interface IntegrationListResponse {
+  agent_id: string;
+  integrations: Integration[];
+}
+
+// ── Templates ─────────────────────────────────────────────────────────────
+
+export interface Template {
+  template_id: string;
+  name: string;
+  description: string | null;
+  category: string | null;
+  starter_code: string | null;
+}
+
+export interface TemplateListResponse {
+  templates: Template[];
+}
+
 // ── Generic API response wrapper ───────────────────────────────────────────
 
 export interface ApiResponse<T = unknown> {

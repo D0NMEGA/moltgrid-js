@@ -30,6 +30,15 @@ import type {
   PubSubChannel,
   PubSubSubscription,
   OnboardingStatus,
+  OrgCreateResponse,
+  OrgListResponse,
+  OrgDetail,
+  OrgInviteResponse,
+  OrgMembersResponse,
+  OrgRemoveResponse,
+  IntegrationCreateResponse,
+  IntegrationListResponse,
+  TemplateListResponse,
 } from "./types.js";
 
 const DEFAULT_BASE_URL = "https://api.moltgrid.net";
@@ -833,5 +842,89 @@ export class MoltGrid {
       "POST",
       `/v1/testing/scenarios/${encodeURIComponent(scenarioId)}/run`
     );
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  //  ORGANIZATIONS
+  // ═══════════════════════════════════════════════════════════════════════
+
+  async orgCreate(
+    name: string,
+    slug?: string
+  ): Promise<OrgCreateResponse> {
+    return this._request<OrgCreateResponse>("POST", "/v1/orgs", {
+      body: { name, slug },
+    });
+  }
+
+  async orgList(): Promise<OrgListResponse> {
+    return this._request<OrgListResponse>("GET", "/v1/orgs");
+  }
+
+  async orgGet(orgId: string): Promise<OrgDetail> {
+    return this._request<OrgDetail>(
+      "GET",
+      `/v1/orgs/${encodeURIComponent(orgId)}`
+    );
+  }
+
+  async orgAddMember(
+    orgId: string,
+    userId: string,
+    role?: string
+  ): Promise<OrgInviteResponse> {
+    return this._request<OrgInviteResponse>(
+      "POST",
+      `/v1/orgs/${encodeURIComponent(orgId)}/members`,
+      { body: { user_id: userId, role: role ?? "member" } }
+    );
+  }
+
+  async orgListMembers(orgId: string): Promise<OrgMembersResponse> {
+    return this._request<OrgMembersResponse>(
+      "GET",
+      `/v1/orgs/${encodeURIComponent(orgId)}/members`
+    );
+  }
+
+  async orgRemoveMember(
+    orgId: string,
+    userId: string
+  ): Promise<OrgRemoveResponse> {
+    return this._request<OrgRemoveResponse>(
+      "DELETE",
+      `/v1/orgs/${encodeURIComponent(orgId)}/members/${encodeURIComponent(userId)}`
+    );
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  //  INTEGRATIONS
+  // ═══════════════════════════════════════════════════════════════════════
+
+  async integrationRegister(
+    agentId: string,
+    platform: string,
+    config?: Record<string, unknown>
+  ): Promise<IntegrationCreateResponse> {
+    return this._request<IntegrationCreateResponse>(
+      "POST",
+      `/v1/agents/${encodeURIComponent(agentId)}/integrations`,
+      { body: { platform, config } }
+    );
+  }
+
+  async integrationList(agentId: string): Promise<IntegrationListResponse> {
+    return this._request<IntegrationListResponse>(
+      "GET",
+      `/v1/agents/${encodeURIComponent(agentId)}/integrations`
+    );
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  //  TEMPLATES
+  // ═══════════════════════════════════════════════════════════════════════
+
+  async templateList(): Promise<TemplateListResponse> {
+    return this._request<TemplateListResponse>("GET", "/v1/templates");
   }
 }

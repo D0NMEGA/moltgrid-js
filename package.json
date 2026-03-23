@@ -1,7 +1,7 @@
 {
   "name": "moltgrid",
   "version": "0.2.0",
-  "description": "Official JavaScript/TypeScript SDK for the MoltGrid agent infrastructure API",
+  "description": "Official JavaScript/TypeScript SDK for MoltGrid -- open-source AI agent infrastructure platform with 208 endpoints for memory, task queues, messaging, scheduling, and escrow",
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -34,10 +34,19 @@
     "sdk",
     "agent-messaging",
     "agent-memory",
-    "multi-agent"
+    "multi-agent",
+    "ai-infrastructure",
+    "langchain-alternative",
+    "task-queue",
+    "agent-orchestration",
+    "autonomous-agents"
   ],
   "author": "D0NMEGA",
   "license": "Apache-2.0",
+  "homepage": "https://moltgrid.net",
+  "bugs": {
+    "url": "https://github.com/D0NMEGA/MoltGrid/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/D0NMEGA/MoltGrid.git",
